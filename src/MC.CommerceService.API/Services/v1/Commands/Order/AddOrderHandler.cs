@@ -65,7 +65,8 @@ namespace MC.CommerceService.API.Services.v1.Commands.Orders
 
                 // Create a new order entity
                 var newOrder = _mapper.Map<Order>(request.Order);
-                newOrder.CreatedBy = "systemUser";  // Assume system user or get from context
+                newOrder.CreatedBy = systemUser;  // Assume system user or get from context
+                newOrder.LastUpdatedBy = systemUser;
 
                 // Create the OrderProduct entities
                 var orderProducts = request.Order.Products.Select(op => new OrderProduct

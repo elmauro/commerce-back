@@ -48,7 +48,7 @@ namespace MC.CommerceService.API.Services.v1.Commands.Orders
 
                 // Apply the new order details to the existing order and update metadata
                 var orderToUpdate = _mapper.Map(newOrder, existingOrder);
-                orderToUpdate.LastUpdatedBy = "systemUser";  // Assume system user or get from context
+                orderToUpdate.LastUpdatedBy = systemUser;  // Assume system user or get from context
                 orderToUpdate.LastUpdatedAt = DateTime.UtcNow;
 
                 // Update the order in the repository

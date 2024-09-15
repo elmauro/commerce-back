@@ -43,7 +43,8 @@ namespace MC.CommerceService.API.Services.v1.Commands.Customers
             {
                 // Map the incoming customer DTO to the Customer entity model.
                 var newCustomer = _mapper.Map<Customer>(request.Customer);
-                newCustomer.CreatedBy = "systemUser";
+                newCustomer.CreatedBy = systemUser;
+                newCustomer.LastUpdatedBy = systemUser;
 
                 // Save the new customer to the database.
                 await _repository.AddCustomerAsync(newCustomer);

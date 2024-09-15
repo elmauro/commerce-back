@@ -51,7 +51,7 @@ namespace MC.CommerceService.API.Services.v1.Commands.Customers
 
                 // Map the new customer details onto the existing customer entity.
                 var customerToUpdate = _mapper.Map(newCustomer, existingCustomer);
-                customerToUpdate.LastUpdatedBy = "systemUser";
+                customerToUpdate.LastUpdatedBy = systemUser;
                 customerToUpdate.LastUpdatedAt = DateTime.UtcNow;
 
                 // Save the updated customer to the repository.

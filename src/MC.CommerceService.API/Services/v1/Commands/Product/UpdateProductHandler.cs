@@ -49,7 +49,6 @@ namespace MC.CommerceService.API.Services.v1.Commands.Products
                 var productToUpdate = _mapper.Map(newProduct, existingProduct);
 
                 // Update the 'LastUpdatedBy' and 'LastUpdatedAt' properties to reflect the current system user and the current UTC time.
-                productToUpdate.CreatedBy = systemUser;
                 productToUpdate.LastUpdatedBy = systemUser;
                 productToUpdate.LastUpdatedAt = DateTime.UtcNow;
 

@@ -51,7 +51,7 @@ namespace MC.CommerceService.API.Services.v1.Commands.Categories
 
                 // Map the new category data onto the existing category.
                 var categoryToUpdate = _mapper.Map(newCategory, existingCategory);
-                categoryToUpdate.LastUpdatedBy = "systemUser";
+                categoryToUpdate.LastUpdatedBy = systemUser;
                 categoryToUpdate.LastUpdatedAt = DateTime.UtcNow;
 
                 // Perform the update operation.
