@@ -52,6 +52,13 @@ Use Docker Compose to launch the database
 
 ```sh
 docker-compose -f compose.yml up --build -d commerce-mssql
+```
+
+```sh
+dotnet tool install --global dotnet-ef
+```
+
+```sh
 dotnet-ef database update --project src/MC.CommerceService.API
 ```
 
