@@ -58,6 +58,12 @@ dotnet-ef database update --project src/MC.CommerceService.API
 ![image](https://github.com/user-attachments/assets/44a71cb9-2bdd-44a5-8bc2-ff0e6c5b01f2)
 
 
+## Database Diagram
+
+![image](https://github.com/user-attachments/assets/9c5619a1-350c-4400-8bef-fe66f0fcdf7d)
+
+
+
 ## Starting the Service
 
 You can start the service using Visual Studio 2022 or Docker Compose
