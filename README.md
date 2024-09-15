@@ -1,4 +1,4 @@
-# commerce-back API Documentation
+# Backend API Documentation
 
 ## Introduction
 
