@@ -1,0 +1,66 @@
+version: 2.1
+
+executors:
+  dotnet-executor:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
+
+jobs:
+  build:
+    executor: dotnet-executor
+    steps:
+      - checkout
+      - run:
+          name: Restore dependencies
+          command: dotnet restore ~/MC.ProductService.sln
+      - run:
+          name: Build
+          command: dotnet build ~/MC.ProductService.sln --no-restore
+
+  test:
+    executor: dotnet-executor
+    steps:
+      - checkout
+      - run:
+          name: Restore dependencies
+          command: dotnet restore ./MC.ProductService.sln
+      - run:
+          name: Test
+          command: dotnet test ./MC.ProductService.sln --no-restore --no-build
+
+  publish:
+    executor: dotnet-executor
+    steps:
+      - checkout
+      - run:
+          name: Restore dependencies
+          command: dotnet restore ./MC.ProductService.sln
+      - run:
+          name: Publish
+          command: dotnet publish ./MC.ProductService.sln -c Release -o out
+
+  deploy:
+    docker:
+      - image: docker:20.10
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+      - run:
+          name: Build and Deploy with Docker Compose
+          command: docker-compose -f compose.yml up --build -d product
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - publish:
+          requires:
+            - test
+      - deploy:
+          requires:
+            - publish

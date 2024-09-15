@@ -1,0 +1,54 @@
+version: '3.7'
+
+# Setting up a network for our containers to talk to each other
+networks:
+  commerce-network:
+    external: true
+
+# Creating a place to keep database data safe
+volumes:
+  mssql-data-commerce:
+
+# Describing the containers we want to run
+services:
+  # Commerce Service
+  # This container runs our main app, made from a Dockerfile.
+  commerce-back:
+    container_name: commerce-back
+    build:
+      dockerfile: Dockerfile
+      context: .
+    restart: unless-stopped
+    ports:
+      - 56508:56508
+    networks:
+    - commerce-network
+    environment:
+      ASPNETCORE_ENVIRONMENT: "DockerDev"
+
+  # Commerce Microsoft SQL Server Database
+  # This container uses a Microsoft SQL Server database to store data.
+  # We set it up with a username and password and make sure data is saved even if the container restarts.
+  commerce-mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: commerce-mssql
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"  # Accepts Microsoft's End User License Agreement
+      SA_PASSWORD: "YourStrong!Passw0rd"  # The system administrator password, make sure it's strong
+      MSSQL_PID: "Express"  # Or "Standard", "Enterprise", or "Developer" depending on your requirements
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data-commerce:/var/opt/mssql  # Persists the SQL Server data
+      - ./.db:/scripts  # Similar to your mssql setup
+    networks:
+      - commerce-network
+    user: root  # Temporarily set user to root for installations
+    entrypoint: |
+      /bin/bash -c " 
+      apt-get update &&
+      apt-get install -y mssql-tools unixodbc-dev && 
+      chmod -R 777 /scripts && 
+      echo 'export PATH=\"$PATH:/opt/mssql-tools/bin\"' >> ~/.bashrc &&
+      /opt/mssql/bin/sqlservr"
